@@ -3,7 +3,6 @@ import os, threading, sys
 import yt_dlp
 from tkinter import messagebox
 
-# Ensure the YoutubeVideos folder exists
 def get_download_path():
     path = os.path.join(os.path.expanduser("~"), "Documents", "YoutubeVideos")
     os.makedirs(path, exist_ok=True)
@@ -20,7 +19,6 @@ class YTDLApp(ctk.CTk):
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("blue")
 
-        # --- UI Widgets ---
         ctk.CTkLabel(self, text="Enter YouTube URL:", font=("Arial", 16)).pack(pady=10)
 
         self.url = ctk.CTkEntry(self, width=400)
@@ -46,7 +44,6 @@ class YTDLApp(ctk.CTk):
 
     def download(self, url):
         try:
-            # Set options depending on audio or video
             if self.audio_only.get():
                 ydl_opts = {
                     'format': 'bestaudio[ext=m4a]/bestaudio',
@@ -56,13 +53,13 @@ class YTDLApp(ctk.CTk):
                         'preferredcodec': 'mp3',
                         'preferredquality': '192',
                     }],
-                    'ffmpeg_location': 'skip',  # Skip ffmpeg merging
+                    'ffmpeg_location': 'skip',
                 }
             else:
                 ydl_opts = {
-                    'format': 'best[ext=mp4]/best',  # Only combined streams
+                    'format': 'best[ext=mp4]/best',
                     'outtmpl': os.path.join(get_download_path(), '%(title)s.%(ext)s'),
-                    'ffmpeg_location': 'skip',  # Skip ffmpeg merging
+                    'ffmpeg_location': 'skip',
                 }
 
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
